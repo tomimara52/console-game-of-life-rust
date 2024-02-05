@@ -1,16 +1,19 @@
 use std::io::{self, Write};
 use std::env;
+use std::fs;
+
 use crate::game::Game;
 
 pub fn create_game() -> Game {
     let args: Vec<String> = env::args().collect();
 
 
-    if args.len() == 1 {
+    if args.len() <= 1 {
         return new_empty_game();
     }
 
-    Game::new(1,1)
+    let filepath = String::from("./game-files/") + &args[1];
+    read_game_from_file(&filepath)
 }
 
 fn read_usize(msg: &str, error_msg: &str) -> usize {
@@ -41,4 +44,21 @@ fn new_empty_game() -> Game {
     game.set_cursor(0, 0).unwrap();
 
     game
+}
+
+fn read_game_from_file(filepath: &String) -> Game {
+    match fs::read_to_string(filepath) {
+        Ok(s) => {
+            if let Some(mut game) = Game::from_string(s) {
+                game.set_cursor(0, 0).unwrap();
+                game
+            } else {
+                new_empty_game()
+            }
+        },
+        Err(_) => {
+            println!("There is no such file.");
+            new_empty_game()
+        }
+    }
 }
