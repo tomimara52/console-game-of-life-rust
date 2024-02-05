@@ -40,9 +40,6 @@ fn main() {
 
     game.set_cursor(0, 0).expect("Cursor out of bounds.");
 
-    game.step_game();
-    game.print_game();
-
     let mut termios = Termios::from_fd(0).expect("Failed to create termios structure for fd 0.");
 
     let start_lflag = termios.c_lflag;
