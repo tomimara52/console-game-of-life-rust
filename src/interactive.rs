@@ -25,7 +25,9 @@ fn read_usize(msg: &str, error_msg: &str) -> usize {
             .expect("Failed to read line.");
 
         if let Ok(n) = input.trim().parse() {
-            break n;
+            if n > 0 {
+                break n;
+            }
         };
         println!("{error_msg}");
     }
