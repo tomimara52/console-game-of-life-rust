@@ -2,7 +2,7 @@ use std::io::{self, Write};
 use std::env;
 use std::fs;
 
-use crate::game::Game;
+use crate::game::{Game, GameError};
 
 pub fn create_game() -> Game {
     let args: Vec<String> = env::args().collect();
@@ -49,12 +49,27 @@ fn new_empty_game() -> Game {
 fn read_game_from_file(filepath: &String) -> Game {
     match fs::read_to_string(filepath) {
         Ok(s) => {
-            if let Some(mut game) = Game::from_string(s) {
-                game.set_cursor(0, 0).unwrap();
-                game
-            } else {
-                println!("Error reading file, it is probably a wrong format.");
-                new_empty_game()
+            match Game::from_string(s) {
+                Ok(mut game) => {
+                    game.set_cursor(0, 0).unwrap();
+                    game
+                },
+                Err(GameError::FormatError) => {
+                    println!("Error reading file, wrong format.");
+                    new_empty_game()
+                },
+                Err(GameError::ZeroDimension) => {
+                    println!("Board cannot have zero as one dimension.");
+                    new_empty_game()
+                },
+                Err(GameError::OutOfBounds) => {
+                    println!("File contains a cell out of bounds.");
+                    new_empty_game()
+                },
+                _ => {
+                    println!("Error reading game from file.");
+                    new_empty_game()
+                }
             }
         },
         Err(_) => {

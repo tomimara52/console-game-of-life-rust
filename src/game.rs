@@ -7,7 +7,9 @@ const RESET: &str    = "\x1b[0m";
 pub enum GameError {
     OutOfBounds,
     CursorIsNone,
-    InvalidDirection
+    InvalidDirection,
+    ZeroDimension,
+    FormatError
 }
 
 pub struct Game {
@@ -188,7 +190,7 @@ impl Game {
         Ok(())
     }
 
-    pub fn from_string(s: String) -> Option<Self> {
+    pub fn from_string(s: String) -> Result<Self, GameError> {
         let mut lines = s.trim().lines();
 
         let dim_x: usize;
@@ -197,14 +199,14 @@ impl Game {
         match lines.next() {
             Some(s) => {
                 match read_pair(&s, "x") {
-                    Some((x, y)) if x == 0 || y == 0 => return None,
+                    Some((x, y)) if x == 0 || y == 0 => return Err(GameError::ZeroDimension),
                     Some(t) => {
                         (dim_x, dim_y) = t;
                     }
-                    None => return None
+                    None => return Err(GameError::FormatError)
                 };
             },
-            None => return None
+            None => return Err(GameError::FormatError)
         }
 
         let mut game = Game::new(dim_x, dim_y);
@@ -215,15 +217,15 @@ impl Game {
 
             match read_pair(&line, ",") {
                 Some(t) => (x, y) = t,
-                None => return None
+                None => return Err(GameError::FormatError)
             }
 
             if let Err(_) = game.set_cell(x, y) {
-                return None;
+                return Err(GameError::OutOfBounds);
             }
         }
 
-        Some(game)
+        Ok(game)
     }
 }
 
