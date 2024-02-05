@@ -7,7 +7,6 @@ use std::io::{self, Read};
 use std::time::Duration;
 use termios::*;
 
-use game::Game;
 use interactive::create_game;
 
 const SLEEP_DURATION: Duration = Duration::from_millis(100);
