@@ -223,12 +223,11 @@ impl Game {
         Ok(game)
     }
 
-    pub fn to_file(&self, filepath: &str) {
+    pub fn to_file(&self, filepath: &str) -> Result<(), &str> {
         let mut file = match File::create(filepath) {
             Ok(f) => f,
             Err(_) => {
-                println!("Error creating file.");
-                return;
+                return Err("Error creating file, you may not have permissions.");
             }
         };
 
@@ -250,8 +249,9 @@ impl Game {
             }
         }
 
-        if let Err(_) = file.write(game_str.as_bytes()) {
-            println!("Error when writing to file");
+        match file.write(game_str.as_bytes()) {
+            Err(_) | Ok(0) => Err("Error when writing to file."),
+            Ok(_) => Ok(())
         }
     }
 }

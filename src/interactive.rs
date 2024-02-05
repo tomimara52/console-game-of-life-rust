@@ -1,5 +1,7 @@
 use std::io::{self, Write};
+use std::time::Duration;
 use std::env;
+use std::thread;
 use std::fs;
 
 use crate::game::{Game, GameError};
@@ -44,7 +46,10 @@ pub fn maybe_save_game(game: &Game) {
         .read_line(&mut filename)
         .expect("Failed to read line.");
 
-    game.to_file(&((String::from("./game-files/")) + filename.trim()));
+    if let Err(s) = game.to_file(&((String::from("./game-files/")) + filename.trim())) {
+        println!("{s}");
+        thread::sleep(Duration::from_secs(2));
+    }
 }
 
 fn read_usize(msg: &str, error_msg: &str) -> usize {
