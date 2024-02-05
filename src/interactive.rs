@@ -53,6 +53,7 @@ fn read_game_from_file(filepath: &String) -> Game {
                 game.set_cursor(0, 0).unwrap();
                 game
             } else {
+                println!("Error reading file, it is probably a wrong format.");
                 new_empty_game()
             }
         },
