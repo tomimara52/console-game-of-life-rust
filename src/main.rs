@@ -46,7 +46,7 @@ fn main() {
 
     set_termios_lflag(&mut termios, input_lflag);
     
-    let rx = spawn_input_thread('q');
+    let rx = spawn_input_thread('r');
 
     loop {
         let input = rx.try_recv().unwrap_or('0');
