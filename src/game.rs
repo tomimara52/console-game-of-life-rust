@@ -63,7 +63,6 @@ impl Game {
         }
     }
 
-    #[allow(dead_code)]
     fn set_cell(&mut self, x: usize, y: usize) -> Result<(), GameError> {
         if x >= self.dim_x || y >= self.dim_y {
             return Err(GameError::OutOfBounds);
@@ -188,4 +187,66 @@ impl Game {
 
         Ok(())
     }
+
+    pub fn from_string(s: String) -> Option<Self> {
+        let mut lines = s.lines();
+
+        let dim_x: usize;
+        let dim_y: usize;
+
+        match lines.next() {
+            Some(s) => {
+                match read_pair(&s, "x") {
+                    Some((x, y)) if x == 0 || y == 0 => return None,
+                    Some(t) => {
+                        (dim_x, dim_y) = t;
+                    }
+                    None => return None
+                };
+            },
+            None => return None
+        }
+
+        let mut game = Game::new(dim_x, dim_y);
+
+        for line in lines {
+            let x: usize;
+            let y: usize;
+
+            match read_pair(&line, ",") {
+                Some(t) => (x, y) = t,
+                None => return None
+            }
+
+            if let Err(_) = game.set_cell(x, y) {
+                return None;
+            }
+        }
+
+        Some(game)
+    }
+}
+
+fn read_pair(s: &str, sep: &str) -> Option<(usize, usize)> {
+    let pair_vec: Vec<&str> = s.split(sep).collect();
+
+    if pair_vec.len() != 2 {
+        return None;
+    }
+
+    let first: usize;
+    if let Ok(n) = pair_vec[0].trim().parse() {
+        first = n;
+    } else {
+        return None;
+    }
+
+    let second: usize;
+    if let Ok(n) = pair_vec[1].trim().parse() {
+        second = n;
+    } else {
+        return None;
+    }
+
+    Some((first, second))
 }
