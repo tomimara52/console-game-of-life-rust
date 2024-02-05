@@ -54,7 +54,7 @@ fn main() {
         match input {
             'w'|'a'|'s'|'d' => game.move_cursor(input).unwrap(),
             ' ' => game.swap_cell().unwrap(),
-            'q' => break,
+            'r' => break,
             _ => {}
         };
 
