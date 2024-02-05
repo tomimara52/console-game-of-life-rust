@@ -1,0 +1,23 @@
+#+title: Console game of life --- WITH RUST
+#+author: Tomás Maraschio
+
+** Description
+  I made this project as a way to learn rust, it is a copy of my other project https://github.com/tomimara52/console-game-of-life
+
+** Compilation
+  cargo build --release
+
+** Usage
+  =./target/release/rust-game-of-life= or =cargo run=
+
+  Then you can add or remove cells interactively.
+
+*** Controls
+**** Editing mode
+  When the program first starts you are in editing mode. You can use =wasd= to
+move the cursor and press =SPACE= to switch the state of the current cell.
+To start the simulation press =q=.
+
+**** Run mode
+  Here you can press =p= to pause the game and then press =n= to advance the
+simulation one step at a time. Press =q= at any time to exit the program.
