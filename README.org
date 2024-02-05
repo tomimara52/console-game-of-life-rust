@@ -5,7 +5,7 @@
   I made this project as a way to learn rust, it is a copy of my other project https://github.com/tomimara52/console-game-of-life
 
 ** Compilation
-  cargo build --release
+  =cargo build --release=
 
 ** Usage
   =./target/release/rust-game-of-life= or =cargo run=
