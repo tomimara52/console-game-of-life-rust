@@ -37,5 +37,8 @@ fn new_empty_game() -> Game {
     let dim_x = read_usize("Put the width you want the board to be: ", "Invalid number.");
     let dim_y = read_usize("Put the height you want the board to be: ", "Invalid number.");
 
-    Game::new(dim_x, dim_y)
+    let mut game = Game::new(dim_x, dim_y);
+    game.set_cursor(0, 0).unwrap();
+
+    game
 }
