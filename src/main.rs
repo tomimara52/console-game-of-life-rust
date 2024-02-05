@@ -1,4 +1,5 @@
 mod game;
+mod interactive;
 
 use std::thread;
 use std::sync::mpsc::{self, Receiver};
@@ -7,6 +8,7 @@ use std::time::Duration;
 use termios::*;
 
 use game::Game;
+use interactive::create_game;
 
 const SLEEP_DURATION: Duration = Duration::from_millis(100);
 
@@ -36,7 +38,7 @@ fn set_termios_lflag(t: &mut Termios, flag: u32) {
 }
 
 fn main() {
-    let mut game = Game::new(30, 30);
+    let mut game = create_game();
 
     game.set_cursor(0, 0).expect("Cursor out of bounds.");
 
