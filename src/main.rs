@@ -36,7 +36,7 @@ fn set_termios_lflag(t: &mut Termios, flag: u32) {
 }
 
 fn main() {
-    let mut game = Game::new(20, 10);
+    let mut game = Game::new(30, 30);
 
     game.set_cursor(0, 0).expect("Cursor out of bounds.");
 
