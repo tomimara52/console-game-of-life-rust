@@ -189,7 +189,7 @@ impl Game {
     }
 
     pub fn from_string(s: String) -> Option<Self> {
-        let mut lines = s.lines();
+        let mut lines = s.trim().lines();
 
         let dim_x: usize;
         let dim_y: usize;
