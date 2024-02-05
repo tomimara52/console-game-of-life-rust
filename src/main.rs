@@ -65,6 +65,11 @@ fn main() {
         thread::sleep(SLEEP_DURATION);
     }
 
+    set_termios_lflag(&mut termios, start_lflag);
+    interactive::maybe_save_game(&game);
+    set_termios_lflag(&mut termios, input_lflag);
+    
+
     game.remove_cursor();
 
     let mut pause = false;
