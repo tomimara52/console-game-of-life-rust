@@ -16,6 +16,37 @@ pub fn create_game() -> Game {
     read_game_from_file(&filepath)
 }
 
+pub fn maybe_save_game(game: &Game) {
+    loop {
+        print!("Do you want to save this game to a file? (y/n) ");
+        io::stdout().flush().unwrap();
+
+        let mut input = String::new();
+
+        io::stdin()
+            .read_line(&mut input)
+            .expect("Failed to read line.");
+
+
+        match input.trim() {
+            "y" => break,
+            "n" => return,
+            _ => continue
+        }
+    }
+
+    let mut filename = String::new();
+
+    print!("Input the filename (it will be saved in game-files directory): ");
+    io::stdout().flush().unwrap();
+
+    io::stdin()
+        .read_line(&mut filename)
+        .expect("Failed to read line.");
+
+    game.to_file(&((String::from("./game-files/")) + filename.trim()));
+}
+
 fn read_usize(msg: &str, error_msg: &str) -> usize {
     loop {
         print!("{msg}");
