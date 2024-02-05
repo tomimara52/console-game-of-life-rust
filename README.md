@@ -5,7 +5,7 @@ https://github.com/tomimara52/console-game-of-life-rust/assets/67428296/114db5b6
 
 
 ## Description
-  I made this project as a way to learn rust, it is a copy of my other project https://github.com/tomimara52/console-game-of-life
+  I made this project as a way to learn rust, it is a copy of my other project: [console-game-of-life](https://github.com/tomimara52/console-game-of-life).
 
 ## Compilation
   `cargo build --release`
