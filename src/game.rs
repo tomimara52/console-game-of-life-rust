@@ -20,7 +20,7 @@ pub struct Game {
 impl Game {
     pub fn new(dim_x: usize, dim_y: usize) -> Self {
         let mut game = Game {
-            board: Vec::with_capacity(dim_x as usize),
+            board: Vec::with_capacity(dim_x),
             dim_x,
             dim_y,
             cursor: None
