@@ -195,32 +195,25 @@ impl Game {
     pub fn from_string(s: String) -> Result<Self, GameError> {
         let mut lines = s.trim().lines();
 
-        let dim_x: usize;
-        let dim_y: usize;
-
-        match lines.next() {
+        let (dim_x, dim_y) = match lines.next() {
             Some(s) => {
                 match read_pair(&s, "x") {
                     Some((x, y)) if x == 0 || y == 0 => return Err(GameError::ZeroDimension),
-                    Some(t) => {
-                        (dim_x, dim_y) = t;
-                    }
+                    Some(t) => t,
                     None => return Err(GameError::FormatError)
-                };
+                }
             },
             None => return Err(GameError::FormatError)
-        }
+        };
 
         let mut game = Game::new(dim_x, dim_y);
 
         for line in lines {
-            let x: usize;
-            let y: usize;
 
-            match read_pair(&line, ",") {
-                Some(t) => (x, y) = t,
+            let (x, y) = match read_pair(&line, ",") {
+                Some(t) => t,
                 None => return Err(GameError::FormatError)
-            }
+            };
 
             if let Err(_) = game.set_cell(x, y) {
                 return Err(GameError::OutOfBounds);
@@ -231,14 +224,13 @@ impl Game {
     }
 
     pub fn to_file(&self, filepath: &str) {
-        let mut file: File;
-
-        if let Ok(f) = File::create(filepath) {
-            file = f;
-        } else {
-            println!("Error creating file.");
-            return;
-        }
+        let mut file = match File::create(filepath) {
+            Ok(f) => f,
+            Err(_) => {
+                println!("Error creating file.");
+                return;
+            }
+        };
 
         let mut game_str = String::new();
 
@@ -271,19 +263,15 @@ fn read_pair(s: &str, sep: &str) -> Option<(usize, usize)> {
         return None;
     }
 
-    let first: usize;
-    if let Ok(n) = pair_vec[0].trim().parse() {
-        first = n;
-    } else {
-        return None;
-    }
+    let first: usize = match pair_vec[0].trim().parse() {
+        Ok(n) => n,
+        Err(_) => return None
+    };
 
-    let second: usize;
-    if let Ok(n) = pair_vec[1].trim().parse() {
-        second = n;
-    } else {
-        return None;
-    }
+    let second: usize = match pair_vec[1].trim().parse() {
+        Ok(n) => n,
+        Err(_) => return None
+    };
 
     Some((first, second))
 }
