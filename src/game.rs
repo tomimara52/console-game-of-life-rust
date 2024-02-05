@@ -1,3 +1,5 @@
+use std::{fs::File, io::Write};
+
 const WHITE_BG: &str = "\x1b[47m";
 const BLACK_FG: &str = "\x1b[30m";
 const RED_BG: &str   = "\x1b[41m";
@@ -226,6 +228,39 @@ impl Game {
         }
 
         Ok(game)
+    }
+
+    pub fn to_file(&self, filepath: &str) {
+        let mut file: File;
+
+        if let Ok(f) = File::create(filepath) {
+            file = f;
+        } else {
+            println!("Error creating file.");
+            return;
+        }
+
+        let mut game_str = String::new();
+
+        game_str += &self.dim_x.to_string();
+        game_str += "x";
+        game_str += &self.dim_y.to_string();
+        game_str += "\n";
+
+        for (x, col) in self.board.iter().enumerate() {
+            for (y, &cell) in col.iter().enumerate() {
+                if cell {
+                    game_str += &x.to_string();
+                    game_str += ",";
+                    game_str += &y.to_string();
+                    game_str += "\n";
+                }
+            }
+        }
+
+        if let Err(_) = file.write(game_str.as_bytes()) {
+            println!("Error when writing to file");
+        }
     }
 }
 
