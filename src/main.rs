@@ -58,7 +58,7 @@ fn main() {
             _ => {}
         };
 
-        print!("{}[2J", 27 as char);
+        print!("\033c");
 
         println!("Controls:\n\t'w', 'a', 's', 'd': move cursor");
         println!("\t'SPACE': swap cell");
@@ -69,7 +69,7 @@ fn main() {
         thread::sleep(SLEEP_DURATION);
     }
 
-    print!("{}[2J", 27 as char);
+    print!("\033c");
     game.remove_cursor();
     game.print_game();
 
@@ -96,7 +96,7 @@ fn main() {
             game.step_game();
         }
 
-        print!("{}[2J", 27 as char);
+        print!("\033c");
         println!("Controls:\n\t'p': pause simulation");
         println!("\t'n': step simulation");
         println!("\t'q': quit\n");
